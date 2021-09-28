@@ -21,6 +21,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Revolver;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.ShooterAlign;
+import frc.robot.subsystems.Turret;
 
 /*
  * This is the "main" class
@@ -39,8 +40,8 @@ public class Robot extends TimedRobot {
   public static Intake intake;
   public static Revolver revolver;
   public static Shooter shooter;
-  
   public static ShooterAlign shooterAlign;
+  public static Turret turret;
   
   //
   private double lastPeriodTime;
@@ -72,6 +73,8 @@ public class Robot extends TimedRobot {
     revolver = new Revolver();
     shooter = new Shooter();
     shooterAlign = new ShooterAlign();
+    turret = new Turret();
+
     oi = new OI();
     lastPeriodTime = Timer.getFPGATimestamp();
     /* Set Default Commands for Subsystems */
@@ -199,6 +202,8 @@ public class Robot extends TimedRobot {
     dashboard.setShooterMotorPower(RobotMap.shooterMotor.get());
     dashboard.setRevolverMotorPower(RobotMap.revolverMotor.get());
     dashboard.setAdjusterMotorPower(RobotMap.shooterAlignMotor.get());
+
+    turret.teleopPeriodic();
   
     //System.out.println("Bottom Switch: "+RobotMap.intakeDownSwitch.get());
   }
