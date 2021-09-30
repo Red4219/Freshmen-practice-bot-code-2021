@@ -40,7 +40,7 @@ public class Drive extends SubsystemBase {
      */
     public void adjustTargetRight() {
         /* Sets tankDrive values */
-        robotDrive.tankDrive(Config.driveTargetAdjustSpeed* -1, Config.driveTargetAdjustSpeed);
+        robotDrive.tankDrive(Config.driveTargetAdjustSpeed * -1, Config.driveTargetAdjustSpeed);
     }
 
     /*

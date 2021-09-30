@@ -38,9 +38,19 @@ public class Aligner {
     }
 
     /*
-     * Raise intake
+     * Aims at the target if it's seen; looks around if not
      */
-    public void robot() {
+    public void autoAim() {
+        
+        if (Robot.limelight.hasTarget()) {
+            aimAtTarget();
+        } else {
+            searchForTarget();
+        }
+
+    }
+
+    private void aimAtTarget () {
         double degreesOff = Robot.limelight.getTx();
         if (Math.abs(degreesOff) > Config.shootTurnTolerance) {
             if (degreesOff > 0) {
@@ -52,6 +62,11 @@ public class Aligner {
             Robot.driveTrain.stopTank();
         }
     }
+
+    private void searchForTarget () {
+        Robot.driveTrain.adjustTargetLeft();
+    }
+
     /*
      * Stops the intake
      */

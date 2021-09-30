@@ -73,7 +73,7 @@ public class Shoot extends CommandBase {
             Robot.aligner.hood();
         } else if (Timer.getFPGATimestamp() - startTime > 1) {
             //Robot.intake.stopLift();
-            Robot.aligner.robot();
+            Robot.aligner.autoAim();
         }
     }
 

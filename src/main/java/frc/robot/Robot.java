@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.autonomous.paths.ForwardAndRotate;
@@ -60,6 +62,7 @@ public class Robot extends TimedRobot {
 
   // Init aligner
   public static Aligner aligner = new Aligner();
+
   /*
    * This function is executed only once when the robot boots up
    */
@@ -204,6 +207,10 @@ public class Robot extends TimedRobot {
     dashboard.setAdjusterMotorPower(RobotMap.shooterAlignMotor.get());
 
     turret.teleopPeriodic();
+
+    // TODO remove test/debug code
+    System.out.println("limelight hasTarget: " + limelight.hasTarget());
+    SmartDashboard.putBoolean("hasTarget", limelight.hasTarget());
   
     //System.out.println("Bottom Switch: "+RobotMap.intakeDownSwitch.get());
   }

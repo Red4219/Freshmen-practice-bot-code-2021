@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
 
 public class Turret extends SubsystemBase {
     
@@ -28,19 +30,24 @@ public class Turret extends SubsystemBase {
         // TODO maybe move this to a dedicated controller class?
 
         // "Sine" wave simulator
-        if (simPosition == maxPos) {
-            movingUp = false;
-        } else if (simPosition == minPos) {
-            movingUp = true;
-        }
+        if (!Robot.limelight.hasTarget()) {
+            if (simPosition == maxPos) {
+                movingUp = false;
+            } else if (simPosition == minPos) {
+                movingUp = true;
+            }
 
-        if (movingUp) {
-            simPosition++;
-        } else {
-            simPosition--;
+            if (movingUp) {
+                simPosition++;
+            } else {
+                simPosition--;
+            }
+
+
         }
 
         System.out.println("Simulated position: " + simPosition);
+        SmartDashboard.putNumber("'Aim' position", simPosition);
 
     }
 

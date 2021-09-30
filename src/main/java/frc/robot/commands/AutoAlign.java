@@ -37,7 +37,7 @@ public class AutoAlign extends CommandBase {
      */
     public void execute() {
         /* Get distance moved since command started */
-        Robot.aligner.robot();
+        Robot.aligner.autoAim();
         /*degreesOff = Robot.limelight.getTx();
         tapeFound = Robot.limelight.hasTarget();
 
