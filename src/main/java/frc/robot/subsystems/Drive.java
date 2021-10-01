@@ -43,6 +43,14 @@ public class Drive extends SubsystemBase {
         robotDrive.tankDrive(Config.driveTargetAdjustSpeed * -1, Config.driveTargetAdjustSpeed);
     }
 
+    /**
+     * Turns clockwise at the given speed
+     */
+    public void rotateAtSpeed (double speed) {
+        double maxSpeed = Config.driveMaxAimSpeed;
+        robotDrive.tankDrive(-1 * maxSpeed * speed, maxSpeed * speed);
+    }
+
     /*
      * Spins robot to the left for manual adjustment
      */

@@ -2,6 +2,7 @@ package frc.robot;
 
 import com.revrobotics.CANSparkMax;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
@@ -51,16 +52,20 @@ public class Aligner {
     }
 
     private void aimAtTarget () {
-        double degreesOff = Robot.limelight.getTx();
-        if (Math.abs(degreesOff) > Config.shootTurnTolerance) {
-            if (degreesOff > 0) {
-                Robot.driveTrain.adjustTargetRight();
-            } else {
-                Robot.driveTrain.adjustTargetLeft();
-            }
-        } else {
-            Robot.driveTrain.stopTank();
-        }
+
+        // Proportional controller
+        // TODO move this to a dedicated controller class
+        double error = Robot.limelight.getTx();
+        double kP = 0.08; // TODO tune this
+
+        double targetSpeed = kP * error;
+        if (targetSpeed > 1)  targetSpeed = 1;
+        if (targetSpeed < -1) targetSpeed = -1;
+
+        SmartDashboard.putNumber("Target Speed", targetSpeed);
+
+        Robot.driveTrain.rotateAtSpeed(targetSpeed);
+
     }
 
     private void searchForTarget () {
