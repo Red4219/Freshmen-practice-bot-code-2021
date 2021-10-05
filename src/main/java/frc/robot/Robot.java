@@ -211,7 +211,8 @@ public class Robot extends TimedRobot {
     // TODO remove test/debug code
     System.out.println("limelight hasTarget: " + limelight.hasTarget());
     SmartDashboard.putBoolean("hasTarget", limelight.hasTarget());
-  
+    SmartDashboard.putNumber("Limelight Distance", Robot.limelight.getDistance());
+
     //System.out.println("Bottom Switch: "+RobotMap.intakeDownSwitch.get());
   }
 

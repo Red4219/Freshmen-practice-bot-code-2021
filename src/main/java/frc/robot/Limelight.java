@@ -31,11 +31,14 @@ public class Limelight {
     /* Get whether Limelight has found a target */
     public boolean hasTarget() {
         double target = tv.getDouble(0.0);
+        /*
         if (target == 1.0) {
             return true;
         } else {
             return false;
         }
+        */
+        return target == 1.0;
     }
 
     /* Get the current x coordinate of target */
