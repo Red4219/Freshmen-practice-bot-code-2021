@@ -21,10 +21,10 @@ public class Intake extends SubsystemBase {
     /* Call intakeMotor defined in RobotMap */
     CANSparkMax intakeMotor = RobotMap.intakeMotor;
     
-
     /* Call intakeSolenoid defined in RobotMap */
     CANSparkMax intakeLiftMotor = RobotMap.intakeLiftMotor;
     CANEncoder intakeLiftEncoder = RobotMap.intakeLiftEncoder;
+
     /*
      * Make this class public
      */
@@ -33,7 +33,15 @@ public class Intake extends SubsystemBase {
     boolean countering = false;
     boolean moving = false;
     public Intake() {
-        intakeLiftEncoder.setPosition(0.0);
+
+        // Set up the conversion factor so the encoder tells us angle instead of motor revolutions
+        intakeLiftEncoder.setPositionConversionFactor(Config.intakeLiftEncoderToAngleRatio);
+
+        // Initialize the starting angle
+        // Assumes robot code starts when lift is fully retracted;
+        // it would be better to have a limit switch at the up/down position to set this
+        intakeLiftEncoder.setPosition(Config.intakeLiftUpAngle);
+
     }
 
     //double downEncoderPos;
@@ -42,6 +50,10 @@ public class Intake extends SubsystemBase {
     //boolean isUpEncoderSet = false;
     int failCount = 0;
     public void periodicIntake() {
+        
+    }
+
+    private void oldLiftController () {
         //boolean a = RobotBase.isEnabled();
         double RPM = Math.abs(intakeLiftEncoder.getVelocity());
         double Position = intakeLiftEncoder.getPosition();
@@ -104,6 +116,23 @@ public class Intake extends SubsystemBase {
             //
         }
     }
+
+    private void intakeLiftController () {
+
+        // 1. Proportional controller
+        // 2. Feedforward controller
+
+        // To create the feedforward controller
+        // 1. Find the encoder pos where the intake lift is straight up
+        // 2. Find some data points of lift angle and motor voltage needed to hold it still
+        // 3. Find a sine function that fits those data points well
+
+        // Force of gravity is zero: 0.571428537368774
+        // Top pos is -0.119047552347183
+        // Bottom pos is 2.380951404571533
+
+    }
+
     /*
      * Lower intake
      */
@@ -147,4 +176,12 @@ public class Intake extends SubsystemBase {
     public void moveOut() {
         intakeMotor.set(Config.intakeSpeed * -1);
     }
+
+    /**
+     * Get the position of the intake lift
+     */
+    public double getLiftAngle () {
+        return intakeLiftEncoder.getPosition();
+    }
+
 }

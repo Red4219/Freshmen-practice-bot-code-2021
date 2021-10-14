@@ -2,6 +2,7 @@ package frc.robot;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -59,6 +60,13 @@ public class RobotMap {
     FrontRightMotor = new CANSparkMax(3, MotorType.kBrushless);
     MiddleRightMotor = new CANSparkMax(2, MotorType.kBrushless);
     BackRightMotor = new CANSparkMax(1, MotorType.kBrushless);
+
+    FrontLeftMotor.setIdleMode(IdleMode.kCoast);
+    MiddleLeftMotor.setIdleMode(IdleMode.kCoast);
+    BackLeftMotor.setIdleMode(IdleMode.kCoast);
+    FrontRightMotor.setIdleMode(IdleMode.kCoast);
+    MiddleRightMotor.setIdleMode(IdleMode.kCoast);
+    BackRightMotor.setIdleMode(IdleMode.kCoast);
 
     /* Set ramp rate for drive motors to decrease current drawn and prevent browning out */
     FrontLeftMotor.setOpenLoopRampRate(0.5);

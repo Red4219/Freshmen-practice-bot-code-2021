@@ -20,6 +20,11 @@ public final class Config {
     public static double intakeSpeed = 0.7;
     public static double intakeLiftSpeed = 0.25;
     public static double intakeDownSpeed = 0.2;
+    public static final double intakeLiftAngleRange = 135.0;
+    public static final double intakeLiftEncoderRange = 2.5;
+    public static final double intakeLiftEncoderToAngleRatio = intakeLiftAngleRange / intakeLiftEncoderRange;
+    public static final double intakeLiftUpAngle = 26.0;
+    public static final double intakeLiftDownAngle = intakeLiftAngleRange - intakeLiftUpAngle;
 
     /* Configuration for revolver */
     public static double revolverSpeed = 0.11;
