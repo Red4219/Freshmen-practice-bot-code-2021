@@ -93,6 +93,10 @@ public class Robot extends TimedRobot {
 
     /* Reset shooter align encoder */
     shooterAlign.reset();
+
+    // Make sure the limelight light is off by default
+    limelight.setDrive();
+
   }
 
   /*
@@ -207,10 +211,6 @@ public class Robot extends TimedRobot {
     dashboard.setAdjusterMotorPower(RobotMap.shooterAlignMotor.get());
 
     turret.teleopPeriodic();
-
-    // TODO remove test/debug code
-    System.out.println("limelight hasTarget: " + limelight.hasTarget());
-    SmartDashboard.putBoolean("hasTarget", limelight.hasTarget());
   
     //System.out.println("Bottom Switch: "+RobotMap.intakeDownSwitch.get());
   }
