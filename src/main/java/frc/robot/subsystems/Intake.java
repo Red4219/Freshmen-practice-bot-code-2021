@@ -1,11 +1,14 @@
 package frc.robot.subsystems;
 
+import java.lang.annotation.Target;
+
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 
 //import org.graalvm.compiler.lir.phases.PostAllocationOptimizationPhase.PostAllocationOptimizationContext;
 
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Config;
 import frc.robot.Robot;
@@ -25,6 +28,10 @@ public class Intake extends SubsystemBase {
     CANSparkMax intakeLiftMotor = RobotMap.intakeLiftMotor;
     CANEncoder intakeLiftEncoder = RobotMap.intakeLiftEncoder;
 
+    private double intakeLiftTargetAngle;
+    private double lastPos;
+    private double lastTime;
+
     /*
      * Make this class public
      */
@@ -41,6 +48,9 @@ public class Intake extends SubsystemBase {
         // Assumes robot code starts when lift is fully retracted;
         // it would be better to have a limit switch at the up/down position to set this
         intakeLiftEncoder.setPosition(Config.intakeLiftUpAngle);
+        this.intakeLiftTargetAngle = Config.intakeLiftUpAngle;
+        lastPos = Config.intakeLiftUpAngle;
+        lastTime = System.currentTimeMillis();
 
     }
 
@@ -51,6 +61,8 @@ public class Intake extends SubsystemBase {
     int failCount = 0;
     public void periodicIntake() {
         
+        intakeLiftController();
+
     }
 
     private void oldLiftController () {
@@ -119,7 +131,7 @@ public class Intake extends SubsystemBase {
 
     private void intakeLiftController () {
 
-        // 1. Proportional controller
+        // 1. Proportional + Derivative controller
         // 2. Feedforward controller
 
         // To create the feedforward controller
@@ -127,10 +139,50 @@ public class Intake extends SubsystemBase {
         // 2. Find some data points of lift angle and motor voltage needed to hold it still
         // 3. Find a sine function that fits those data points well
 
-        // Force of gravity is zero: 0.571428537368774
-        // Top pos is -0.119047552347183
-        // Bottom pos is 2.380951404571533
+        // TODO Move constants to config
+        double liftAngleDeg = getLiftAngle();      
+        double liftAngleRad = Math.toRadians(liftAngleDeg);  
 
+        // Gravity feedforward
+        double kG = -0.25;
+        double ffGravity = kG * Math.sin(liftAngleRad);
+
+        // Proportional controller
+        double error = this.intakeLiftTargetAngle - liftAngleDeg;
+        double kP = 0.005;
+        double pv = kP * error;
+        double maxPV = 0.2;
+        if (pv > maxPV) pv = maxPV;
+        if (pv < -maxPV) pv = -maxPV;
+
+        // Derivative controller
+        // TODO this is super bad
+        /*
+        double dAngle = liftAngleDeg - lastPos;
+        double dTime = (lastTime - System.currentTimeMillis()) / 1000;
+        double speed = dAngle / dTime;
+        double kD = 0.0015;
+        double dv = kD * speed;
+        dv = boundNumber(dv, 0.25);
+        */
+
+        lastPos = liftAngleDeg;
+        lastTime = System.currentTimeMillis();
+
+        double sum = ffGravity + pv;
+
+        intakeLiftMotor.set(sum);
+        SmartDashboard.putNumber("Lift Motor", ffGravity);
+
+    }
+
+    // TODO move this somewhere else
+    private double boundNumber (double num, double limit) {
+        if (Math.abs(num) > Math.abs(limit)) {
+            return Math.signum(num) * limit;
+        } else {
+            return num;
+        }
     }
 
     /*
