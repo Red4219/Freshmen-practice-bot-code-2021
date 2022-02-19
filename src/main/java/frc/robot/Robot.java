@@ -202,8 +202,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     intake.periodicIntake();
-    dashboard.setLeftMotorPower(RobotMap.MiddleLeftMotor.get());
-    dashboard.setRightMotorPower(RobotMap.MiddleRightMotor.get());
+    //dashboard.setLeftMotorPower(RobotMap.MiddleLeftMotor.get());
+    //dashboard.setRightMotorPower(RobotMap.MiddleRightMotor.get());
     dashboard.setIntakeMotorPower(RobotMap.intakeMotor.get());
     dashboard.setIntakeLiftMotorPower(RobotMap.intakeLiftMotor.get());
     dashboard.setShooterMotorPower(RobotMap.shooterMotor.get());
